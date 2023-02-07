@@ -62,3 +62,46 @@ Quantified Self-App is a web application that tracks life parameters. Logs value
 - Progressive Web App of this may be locally installed.
 - All pages are dynamically rendered with Vue.
 
+## File Structure
+
+```
+.
+├── api.yaml
+├── LICENSE
+├── README.md
+├── screenshots
+└── src
+    ├── application........... Contains the api handler, configuration, controllers, 
+    │   │                      database, model, email handler, jobs for celery
+    │   ├── api.py
+    │   ├── config.py
+    │   ├── controllers.py
+    │   ├── database.py
+    │   ├── email.py
+    │   ├── __init__.py
+    │   ├── jobs.............. Files for scheduling tasks & configuring celery Task handler
+    │   │   ├── __init__.py
+    │   │   ├── __pycache__
+    │   │   ├── tasks.py
+    │   │   └── workers.py
+    │   ├── models.py
+    │   ├── plot.py........... Uses matplotlib to plot trendlines of tracker logs
+    │   ├── __pycache__
+    │   └── validation.py..... For handling HTTP exceptions
+    ├── app.sh................ Runs the celery schedule, MailHog and the entire application
+    ├── db_directory.......... Contains the database in sqlite3 version
+    ├── main.py............... Entry point into the application
+    ├── __pycache__
+    ├── requirements.txt...... Contains the requirements
+    ├── static................ Contains Vue js files for SPA, service-worker files for 
+    │   │                      PWA and stores images of trendlines
+    │   ├── icon.png
+    │   ├── images
+    │   ├── js
+    │   │   └── app.js
+    │   ├── manifest.json
+    │   └── service-worker.js
+    └── templates............. HTML templates for the Report and Navigation Bar on all pages
+        ├── index.html
+        └── report.html
+```
