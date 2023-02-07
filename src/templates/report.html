@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <title>Progress Report</title>
+    <style>
+    	html {
+            color: #393939;
+            font-family: "Noto sans", sans-serif;
+            font-size: 11pt;
+            font-weight: 300;
+            line-height: 1.5;
+        }
+        h2,
+        h3,
+        h4 {
+            color: black;
+            font-weight: 400;
+        }
+
+        table, th, td {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+
+<body class="container-fluid">
+    <h3>User: {{email}}</h3>
+    <table class="table" id="all-trackers">
+    <thead>
+        <tr class="success">
+            <th>#</th>
+            <th>Tracker Name</th>
+            <th>Tracker Description</h>
+            <th>Last Reviewed Time</th>
+            <th>Tracker Type</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for i in range(trackers|length) %}
+        <tr>
+            <td>{{i+1}}</td>
+            <td>{{trackers[i].name}}</td>
+            <td>{{trackers[i].desc}}</td>
+            <td>{{timestamp[i]}}</td>
+            <td>{{trackers[i].type}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+    </table>
+</body>
+
+</html>

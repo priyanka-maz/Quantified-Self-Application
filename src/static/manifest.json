@@ -1,0 +1,15 @@
+{
+  "short_name": "Quantified-Self",
+  "name": "Quantified-Self",
+  "theme_color": "#4A90E2",
+  "background_color": "#F7F8F9",
+  "display": "standalone",
+  "icons": [
+    {
+      "src": "/static/icon.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    }
+     ],
+  "start_url": "/"
+}

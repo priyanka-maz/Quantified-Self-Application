@@ -1,0 +1,647 @@
+openapi: 3.0.0
+info:
+  title: Quantified Self-App 
+  description: >
+    <p>
+      Quantified Self-App is a self-tracking web application that tracks life parameters into trackers and plots trendlines on the basis of the logs of each tracker.
+    </p>
+    <h2> Error Codes </h2>
+
+    <table>
+      <thead>
+        <th><p>Resource</p></th>
+        <th><p>Error Code</p></th>
+        <th><p>Message</p></th>
+      </thead>
+      <tbody>
+        <tr>
+          <td><p>User</p></td>
+          <td><p>UHT</p></td>
+          <td><p>User has trackers</p></td>
+        </tr>
+        <tr>
+          <td><p>Miscellanous</p></td>
+          <td><p>ERB</p></td>
+          <td><p>Empty request body</p></td>
+        </tr>
+        <tr>
+          <td><p>Miscellanous</p></td>
+          <td><p>TE</p></td>
+          <td><p>Type Error</p></td>
+        </tr>
+     </tbody>
+    </table>
+
+
+
+  version: 1.0.0
+  
+tags:
+  - name: user
+    description: Operations about user
+  - name: tracker
+    description: Operations to tracker
+  - name: log
+    description: Operations for logs
+  
+paths:
+  /api/user:
+    description: End point to create, edit, delete user resource
+    post:
+      tags:
+        - user
+      description: Operation to create user resource
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: dummy@gmail.com
+                password:
+                    type: string
+                    example: dummy1234*
+                
+      responses:
+        '200':
+          description: User Successfully Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user_id:
+                    type: integer
+                    example: 21
+                  email:
+                    type: string
+                    example: dummy@gmail.com
+                  
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error_code:
+                    type: string
+                    example: ERB
+                  error_message:
+                    type: string
+                    example: Empty request body
+        '405':
+          description: Email already exists
+        '500':
+          description: Internal Server Error
+    get:
+      tags:
+        - user
+      description: Operation to read user resource
+      responses:
+        '200':
+          description: Request Successful
+          content:
+            application/json:
+              schema:
+                title: user object
+                type: object
+                properties:
+                  user_id:
+                    type: integer
+                    example: 21
+                  email:
+                    type: string
+                    example: dummy@gmail.com
+        '404':
+          description: User not found
+        '500':
+          description: Internal Server Error
+    delete:
+      tags:
+        - user
+      description: Operation to delete the user resource
+      responses:
+        '200':
+          description: Successfully Deleted
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error_code:
+                    type: string
+                    example: UHT
+                  error_message:
+                    type: string
+                    example: User has trackers
+        '404':
+          description: User not found
+        '500':
+          description: Intenal Server Error
+
+  /api/tracker:
+    description: End point to create tracker resource
+    post:
+      tags:
+         - tracker
+      description: Operation to create the tracker resource
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                    type: integer
+                    example: 21
+                name:
+                    type: string
+                    example: Mood
+                desc:
+                    type: string
+                    example: To track my mood
+                type:
+                    type: string
+                    example: mcq
+                mcq:
+                    type: string
+                    example: happy, sad, good
+      responses:
+        '200':
+          description: Successfully Created
+          content:
+            application/json:
+              schema:
+                title: tracker object
+                type: object
+                properties:
+                  tracker_id:
+                    type: integer
+                    example: 15
+                  user_id:
+                    type: integer
+                    example: 21
+                  name:
+                    type: string
+                    example: Mood
+                  desc:
+                    type: string
+                    example: To track my mood
+                  type:
+                    type: string
+                    example: MCQ
+                  mcq:
+                    type: string
+                    example: happy, sad, good
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error_code:
+                    type: string
+                    example: ERB
+                  error_message:
+                    type: string
+                    example: Empty Request Body
+        '500':
+          description: Internal Server Error
+          
+  /api/tracker?email={email}:
+    description: End point to get all the trackers under a user resource with email
+    get:
+      tags:
+        - tracker
+      description: Operation to read trackers under user resource
+      parameters:
+        - in: path
+          name: email
+          required: true
+          schema:
+            type: string
+            example: dummy@gmail.com
+      responses:
+        '200':
+          description: Request Successful
+          content:
+            application/json:
+              schema:
+                title: Tracker list
+                type: array
+                example: [3, 4]
+                items:
+                  type: integer
+        '404':
+          description: User not found
+        '500':
+          description: Internal Server Error
+
+  /api/tracker?tracker_id={tracker_id}:
+    description: End point to read, edit, delete the tracker resource
+    get:
+      tags:
+        - tracker
+      description: Operation to read tracker resource
+      parameters:
+        - in: path
+          name: tracker_id
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: Request Successful
+          content:
+            application/json:
+              schema:
+                title: tracker object
+                type: object
+                properties:
+                  tracker_id:
+                    type: integer
+                    example: 3
+                  user_id:
+                    type: integer
+                    example: 21
+                  name:
+                    type: string
+                    example: Mood
+                  desc:
+                    type: string
+                    example: To track my mood
+                  type:
+                    type: string
+                    example: MCQ
+                  mcq:
+                    type: string
+                    example: happy, sad, good
+                  bstr:
+                    type: string
+                    example: VIojhbgfdxcvhytIj==
+        '500':
+          description: Internal server error
+        '404':
+          description: Tracker not found
+    put:
+      tags:
+        - tracker
+      description: Operation to edit tracker name or message
+      parameters:
+        - in: path
+          name: tracker_id
+          required: true
+          schema:
+            type: integer
+            example: 1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                  name:
+                    type: string
+                    example: Behaviour
+                  desc:
+                    type: string
+                    example: To track my behaviour
+
+      responses:
+        '200':
+          description: Update Successful
+          content:
+            application/json:
+              schema:
+                title: tracker object 
+                type: object
+                properties:
+                  tracker_id:
+                    type: integer
+                    example: 1
+                  user_id:
+                    type: integer
+                    example: 21
+                  name:
+                    type: string
+                    example: Behaviour
+                  desc:
+                    type: string
+                    example: To track my behaviour
+                  type:
+                    type: string
+                    example: MCQ
+                  mcq:
+                    type: string
+                    example: happy, sad, good
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error_code:
+                    type: string
+                    example: ERB
+                  error_message:
+                    type: string
+                    example: Empty Request Body
+        '500':
+          description: Internal server error
+        '404':
+          description: Tracker not found 
+    delete:
+      tags:
+        - tracker
+      description: Operation to delete the tracker resource
+      parameters:
+        - in: path
+          name: tracker_id
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: Successfully Deleted
+          content:
+            application/json:
+              schema:
+                title: tracker object
+                type: object
+                properties:
+                  tracker_id:
+                    type: integer
+                    example: 3
+                  user_id:
+                    type: integer
+                    example: 21
+                  name:
+                    type: string
+                    example: Mood
+                  desc:
+                    type: string
+                    example: To track my mood
+                  type:
+                    type: string
+                    example: MCQ
+                  mcq:
+                    type: string
+                    example: happy, sad, good
+        '500':
+          description: Internal Server Error
+        '404':
+          description: Tracker not found 
+
+  /api/log:
+    description: End point to create a log resource
+    post:
+      tags:
+         - log
+      description: Operation to create the log resource
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                tracker_id:
+                  type: integer
+                  example: 1
+                timestamp:
+                  type: string
+                  example: 2022/09/20 02:31
+                value:
+                  type: string
+                  example: sad
+                note:
+                  type: string
+                  example: Feeling down
+      responses:
+        '200':
+          description: Successfully Created
+          content:
+            application/json:
+              schema:
+                title: tracker object
+                type: object
+                properties:
+                  log_id:
+                    type: integer
+                    example: 5
+                  tracker_id:
+                    type: integer
+                    example: 1
+                  timestamp:
+                    type: string
+                    example: 2022/09/20 02:31
+                  value:
+                    type: string
+                    example: sad
+                  note:
+                    type: string
+                    example: Feeling down
+
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error_code:
+                    type: string
+                    example: ERB
+                  error_message:
+                    type: string
+                    example: Empty Request Body
+        '500':
+          description: Internal Server Error
+
+  /api/log?tracker_id={tracker_id}:
+    description: End point to get all logs in a tracker resource with tracker_id
+    get:
+      tags:
+        - log
+      description: Operation to read logs under a tracker resource
+      parameters:
+        - in: path
+          name: tracker_id
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: Request Successful
+          content:
+            application/json:
+              schema:
+                title: log list
+                type: array
+                items:
+                  type: integer
+                example: [5, 6]
+        '404':
+          description: Tracker not found
+        '500':
+          description: Internal Server Error
+
+  /api/log?log_id={log_id}:
+    description: End point to read, edit, delete log resource
+    get:
+      tags:
+         - log
+      description: Operation to read log resource
+      parameters:
+        - in: path
+          name: log_id
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: Request Successful
+          content:
+            application/json:
+              schema:
+                title: log object
+                type: object
+                properties:
+                  log_id:
+                    type: integer
+                    example: 1
+                  tracker_id:
+                    type: integer
+                    example: 1
+                  timestamp:
+                    type: string
+                    example: 2022/09/20 02:31
+                  value:
+                    type: string
+                    example: sad
+                  note:
+                    type: string
+                    example: Feeling down
+        '500':
+          description: Internal server error
+        '404':
+          description: Log not found
+    put:
+      tags:
+         - log
+      description: Operation to edit value, timestamp or note of log resource
+      parameters:
+      - in: path
+        name: log_id
+        required: true
+        schema:
+          type: integer
+          example: 1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                  timestamp:
+                    type: string
+                    example: 2022/09/20 02:31
+                  value:
+                    type: string
+                    example: sad
+                  note:
+                    type: string
+                    example: Feeling down
+      responses:
+        '200':
+          description: Successfully Updated
+          content:
+            application/json:
+              schema:
+                title: log object
+                type: object
+                properties:
+                  log_id:
+                    type: integer
+                    example: 1
+                  tracker_id:
+                    type: integer
+                    example: 3
+                  timestamp:
+                    type: string
+                    example: 2022/09/20 02:31
+                  value:
+                    type: string
+                    example: sad
+                  note:
+                    type: string
+                    example: Feeling down
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error_code:
+                    type: string
+                    example: ERB
+                  error_message:
+                    type: string
+                    example: Empty Request Body
+        '404':
+          description: Log not found
+        '500':
+          description: Internal Server Error
+    delete:
+      tags:
+         - log
+      description: Operation to delete the log resource
+      parameters:
+        - in: path
+          name: log_id
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: Successfully Deleted
+          content:
+            application/json:
+              schema:
+                title: log object
+                type: object
+                properties:
+                  log_id:
+                    type: integer
+                    example: 1
+                  tracker_id:
+                    type: integer
+                    example: 1
+                  timestamp:
+                    type: string
+                    example: 2022/09/20 02:31
+                  value:
+                    type: string
+                    example: sad
+                  note:
+                    type: string
+                    example: Feeling down
+        '500':
+          description: Internal Server Error
+        '404':
+          description: Log not found
+          
+servers:
+  - url: http://127.0.0.1:8080/
