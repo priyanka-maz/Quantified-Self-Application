@@ -272,7 +272,7 @@ class LogAPI(Resource):
         timestamp: str = args.get("timestamp", None)
         if not(tracker_id and value and note):
             raise BusinessValidationError(400, "ERB", "Empty request body.")
-        elif tracker.mcq and (value in tracker.mcq):
+        elif tracker.mcq and (value not in tracker.mcq):
             raise BusinessValidationError(400, "TE", "Type Error.")
         else:
             try:

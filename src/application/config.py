@@ -34,7 +34,7 @@ class DevelopmentConfig(Config):
     CACHE_REDIS_DB = 9
     SMTP_SERVER_HOST = "localhost"
     SMTP_SERVER_PORT = 1025
-    SENDER_ADDRESS = "priyankamazumdar0612@gmail.com"
+    SENDER_ADDRESS = "dummy@gmail.com"
     SENDER_PASSWORD = ""
 
 
@@ -60,5 +60,5 @@ class ProductionConfig(Config):
     CACHE_REDIS_DB = 9
     SMTP_SERVER_HOST = "localhost"
     SMTP_SERVER_PORT = 1025
-    SENDER_ADDRESS = "priyankamazumdar0612@gmail.com"
+    SENDER_ADDRESS = "dummy@gmail.com"
     SENDER_PASSWORD = ""
